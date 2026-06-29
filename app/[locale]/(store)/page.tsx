@@ -14,7 +14,7 @@ const SLIDES = [
     cta_en: 'Shop Now', cta_bn: 'এখনই কিনুন',
     badge_en: 'Up to\n30% Off', badge_bn: 'সর্বোচ্চ\n৩০% ছাড়',
     image_desktop: '/Banner1.png',
-    image_mobile: '/Banner1_mobile.png',
+    image_mobile: '/bannerphn.jpeg',
     bg: '#f0f9f9',
     accent: '#057476',
   },
