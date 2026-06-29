@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { Home, ShoppingBag, ShoppingCart, Heart, Grid2X2, Crown, Flower2, Sprout, Frame, Flame, Sparkles, LayoutGrid, Gift, Info, Truck, RefreshCw, ShieldAlert, Phone, MapPin, PhoneCall, Mail, Clock } from 'lucide-react';
+import { Home, ShoppingBag, ShoppingCart, Heart, Grid2X2, Crown, Flower2, Sprout, Frame, Flame, Sparkles, LayoutGrid, Gift, Info, Truck, RefreshCw, ShieldAlert, Phone, MapPin, PhoneCall, Mail, Clock, User } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 
@@ -18,8 +18,8 @@ export default function FooterNav() {
     { label_en: 'Home',  label_bn: 'হোম',  icon: Home,      href: `/${currentLocale}` },
     { label_en: 'Shop',  label_bn: 'শপ',   icon: ShoppingBag,    href: `/${currentLocale}/shop` },
     { label_en: 'Cart',  label_bn: 'কার্ট', icon: ShoppingCart, href: null },          // opens drawer
-    { label_en: 'Deals', label_bn: 'অফার',  icon: Heart,     href: `/${currentLocale}/shop` },
-    { label_en: 'More',  label_bn: 'আরো',  icon: Grid2X2,   href: `/${currentLocale}/shop` },
+    { label_en: 'Wishlist', label_bn: 'উইশলিস্ট', icon: Heart,  href: `/${currentLocale}/shop` },
+    { label_en: 'Account',  label_bn: 'প্রোফাইল', icon: User,   href: `/${currentLocale}/account` },
   ];
 
   return (
