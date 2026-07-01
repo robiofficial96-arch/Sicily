@@ -4,19 +4,21 @@
 
 :root {
   --background: #FFFFFF;
-  --foreground: #111111;
+  --foreground: #161513;
 
+  /* Refined Luxury palette — muted teal & wine, warm ivory surfaces, gold hairline accents */
   --color-bg:        #FFFFFF;  /* Clean white background */
-  --color-surface:   #FAFDFD;  /* Soft teal-tinted white surface */
-  --color-primary:   #057476;  /* Deep Teal — Primary buttons & headers */
-  --color-primary-alt: #008B8B; /* Dark Cyan — Alternate primary elements */
-  --color-secondary: #D80064;  /* Deep Pink — Secondary actions/prominent highlights */
-  --color-secondary-dark: #A9004B; /* Darker Pink — Accent highlights */
-  --color-secondary-light: #FF3385; /* Rose Pink — Interactive badges */
-  --color-accent:    #00f0d2;  /* Neon Turquoise — Interactive icons/micro-highlights */
-  --color-text:      #111111;  /* Rich black for maximum readability */
-  --color-muted:     #4A4A4A;  /* Dark gray for secondary descriptions */
-  --color-border:    #E5EEEE;  /* Light teal-tinted borders */
+  --color-surface:   #FAF7F1;  /* Warm ivory surface */
+  --color-primary:   #0B5D5C;  /* Deep muted teal — primary buttons & headers */
+  --color-primary-alt: #0F7573; /* Slightly lifted teal — hover state */
+  --color-secondary: #7D1F3D;  /* Deep wine/berry — secondary accents */
+  --color-secondary-dark: #5C1730; /* Darker wine — pressed state */
+  --color-secondary-light: #9C2E4E; /* Lifted wine — hover state */
+  --color-accent:    #C6A15B;  /* Warm gold — hairline accents, premium micro-highlights */
+  --color-ink:       #14201D;  /* Near-black ink for dark sections (footer, hero) */
+  --color-text:      #16130F;  /* Rich warm black for maximum readability */
+  --color-muted:     #6B6560;  /* Warm gray for secondary descriptions */
+  --color-border:    #E9E3D8;  /* Warm hairline border */
 }
 
 body {

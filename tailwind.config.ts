@@ -20,6 +20,7 @@ const config: Config = {
           "secondary-dark": "var(--color-secondary-dark)",
           "secondary-light": "var(--color-secondary-light)",
           accent: "var(--color-accent)",
+          ink: "var(--color-ink)",
           text: "var(--color-text)",
           muted: "var(--color-muted)",
           border: "var(--color-border)",

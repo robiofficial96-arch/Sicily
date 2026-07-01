@@ -183,13 +183,17 @@ export default function ShopPage() {
   return (
     <div className="space-y-8 font-sans">
       {/* Header Banner */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-brand-primary to-brand-primary-alt p-8 md:p-12 text-white flex flex-col justify-center min-h-[160px] md:min-h-[220px] shadow-lg shadow-brand-primary/10">
+      <div className="relative rounded-2xl overflow-hidden bg-[#0B5D5C] p-8 md:p-12 text-white flex flex-col justify-center min-h-[160px] md:min-h-[220px] border border-white/10">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
         <div className="relative space-y-2 max-w-xl">
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
+          <span className="inline-flex items-center gap-2 text-[10px] font-semibold tracking-[0.25em] text-[#C6A15B] uppercase mb-1">
+            <span className="h-px w-4 bg-[#C6A15B]" />
+            {locale === 'bn' ? 'সিসিলি ডেকোর' : 'Sicily Decor'}
+          </span>
+          <h1 className="font-serif text-3xl md:text-5xl font-semibold tracking-tight leading-tight">
             {locale === 'bn' ? 'আমাদের ডেকোর কালেকশন' : 'Our Decor Collection'}
           </h1>
-          <p className="text-xs md:text-sm text-white/90 leading-relaxed font-medium">
+          <p className="text-xs md:text-sm text-white/70 leading-relaxed font-medium">
             {locale === 'bn' 
               ? 'প্রিমিয়াম কোয়ালিটির ফ্লাওয়ার, ওয়াল আর্ট ফ্রেম এবং মেটাল হ্যাঙ্গার সংগ্রহ।' 
               : 'Explore our high-quality premium flowers, wall-art frames, and hanger stands.'}
@@ -303,12 +307,12 @@ export default function ShopPage() {
                       {/* Badges */}
                       <div className="absolute top-3 left-3 flex flex-col gap-2">
                         {product.isFeatured && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-brand-primary uppercase tracking-wider">
+                          <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-[#C6A15B] bg-[#14201D] uppercase tracking-wider">
                             Best
                           </span>
                         )}
                         {hasSale && (
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-brand-secondary uppercase tracking-wider">
+                          <span className="px-2.5 py-0.5 rounded-md text-[10px] font-bold text-white bg-brand-secondary uppercase tracking-wider">
                             Sale
                           </span>
                         )}
