@@ -43,20 +43,23 @@ export default function Navbar() {
             <div className="flex items-center justify-start">
               <button
                 onClick={() => setMenuOpen(o => !o)}
-                className="p-2 -ml-2 rounded-lg text-brand-muted hover:bg-brand-surface focus:outline-none transition-colors"
+                className="h-10 w-10 flex items-center justify-center rounded-full border border-brand-border text-brand-text hover:border-[#C6A15B] hover:text-[#C6A15B] hover:bg-brand-surface active:scale-95 focus:outline-none transition-all duration-200"
               >
-                {menuOpen ? <X className="h-6 w-6" strokeWidth={1.75} /> : <Menu className="h-6 w-6" strokeWidth={1.75} />}
+                {menuOpen ? <X className="h-5 w-5" strokeWidth={1.75} /> : <Menu className="h-5 w-5" strokeWidth={1.75} />}
               </button>
             </div>
 
-            {/* Center: Brand Logo (single line) */}
-            <Link href={`/${currentLocale}`} className="flex items-center gap-2 group select-none justify-self-center">
+            {/* Center: Brand Logo & Tagline (matches footer lockup) */}
+            <Link href={`/${currentLocale}`} className="flex items-center gap-2.5 group select-none justify-self-center">
               <img
                 src="/Sicily_icon.png"
                 alt="Sicily"
-                className="h-8 w-8 object-contain group-hover:scale-105 transition-transform duration-200"
+                className="h-9 w-9 object-contain group-hover:scale-105 transition-transform duration-200"
               />
-              <span className="text-[19px] font-serif font-semibold tracking-tight text-brand-text leading-none">Sicily</span>
+              <div className="leading-none text-left">
+                <span className="block text-[19px] font-serif font-semibold tracking-tight text-brand-text">Sicily</span>
+                <span className="block text-[7px] font-semibold tracking-[0.18em] uppercase text-[#C6A15B] mt-1">Focus On Quality</span>
+              </div>
             </Link>
 
             {/* Right: Wishlist Action */}
