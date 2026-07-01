@@ -7,9 +7,11 @@ import { useState, useEffect, useRef } from 'react';
 
 /* ── BANNER SLIDES (image-only — all copy/CTA lives inside the banner artwork) ── */
 const SLIDES = [
-  { image: '/Banner1.png', alt_en: 'Summer Collection — Up to 50% Off', alt_bn: 'সামার কালেকশন — সর্বোচ্চ ৫০% ছাড়' },
-  { image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=85&w=1200', alt_en: 'New Arrivals — Floral Stands', alt_bn: 'নতুন কালেকশন — ফ্লাওয়ার স্ট্যান্ড' },
-  { image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=85&w=1200', alt_en: 'Exclusive Offer — Premium Planters', alt_bn: 'বিশেষ অফার — প্রিমিয়াম প্ল্যান্টার' },
+  { image: '/header-image-1.png', alt_en: 'Online Payment — Instant 10% Discount', alt_bn: 'অনলাইন পেমেন্টে ইনস্ট্যান্ট ১০% ডিসকাউন্ট' },
+  { image: '/header-image-2.png', alt_en: 'Premium Swing Stand', alt_bn: 'প্রিমিয়াম দোলনা স্ট্যান্ড' },
+  { image: '/header-image-3.png', alt_en: "Decorate Your Home Naturally", alt_bn: 'প্রকৃতির ছোঁয়ায় সাজুক আপনার ঘর' },
+  { image: '/header-image-4.png', alt_en: 'Premium Bird Nest', alt_bn: 'প্রিমিয়াম বার্ড নেস্ট' },
+  { image: '/header-image-5.png', alt_en: 'Premium Swing Stand', alt_bn: 'প্রিমিয়াম দোলনা স্ট্যান্ড' },
 ];
 
 /* ── SHOP BY CATEGORIES DATA ── */
