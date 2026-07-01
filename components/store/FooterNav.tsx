@@ -18,7 +18,7 @@ export default function FooterNav() {
     { label_en: 'Home',       label_bn: 'হোম',        icon: Home,         href: `/${currentLocale}` },
     { label_en: 'Shop',       label_bn: 'শপ',         icon: LayoutGrid,   href: `/${currentLocale}/shop` },
     { label_en: 'Cart',       label_bn: 'কার্ট',       icon: ShoppingCart, action: 'cart' as const },
-    { label_en: 'Orders',     label_bn: 'অর্ডারসমূহ',  icon: Package,      href: `/${currentLocale}/admin/orders` },
+    { label_en: 'Orders',     label_bn: 'অর্ডারসমূহ',  icon: Package,      href: `/${currentLocale}/account` },
     { label_en: 'Account',    label_bn: 'প্রোফাইল',     icon: User,         href: `/${currentLocale}/account` },
   ];
 

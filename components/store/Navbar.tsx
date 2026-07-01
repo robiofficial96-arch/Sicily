@@ -20,7 +20,7 @@ export default function Navbar() {
     { en: 'Home',      bn: 'হোম',        icon: Home,         href: `/${currentLocale}` },
     { en: 'Shop',      bn: 'শপ',         icon: LayoutGrid,   href: `/${currentLocale}/shop` },
     { en: 'Wishlist',  bn: 'উইশলিস্ট',    icon: Heart,        href: `/${currentLocale}/shop` },
-    { en: 'Orders',    bn: 'অর্ডারসমূহ',  icon: Package,      href: `/${currentLocale}/admin/orders` },
+    { en: 'Orders',    bn: 'অর্ডারসমূহ',  icon: Package,      href: `/${currentLocale}/account` },
     { en: 'Account',   bn: 'প্রোফাইল',     icon: User,         href: `/${currentLocale}/account` },
   ];
 
