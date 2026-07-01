@@ -148,7 +148,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
         {/* Quick-add overlay (appears on hover) */}
         <Link
           href={`/${locale}/p/${p.id}`}
-          className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 bg-gradient-to-r from-[#14201D] via-[#1B2925] to-[#14201D] text-[#C6A15B] text-[10px] font-bold uppercase tracking-widest py-2.5 flex items-center justify-center gap-1.5 transition-transform duration-300 ease-out"
+          className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 bg-gradient-to-r from-brand-secondary to-brand-secondary-dark text-white text-[10px] font-bold uppercase tracking-widest py-2.5 flex items-center justify-center gap-1.5 transition-transform duration-300 ease-out"
         >
           <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
           <span>{locale === 'bn' ? 'কার্টে যোগ করুন' : 'Add to Cart'}</span>
@@ -296,7 +296,7 @@ export default function HomePage() {
             <p className="text-[10px] text-white/60 font-medium">{locale === 'bn' ? 'আপনার প্রথম অর্ডারে পাবেন' : 'Applicable on your first order'}</p>
           </div>
           <div className="pt-3">
-            <span className="inline-block border border-[#C6A15B]/60 text-[#C6A15B] px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider">
+            <span className="inline-block border border-white/50 bg-white/10 text-white px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider">
               {locale === 'bn' ? 'কোড: WELCOME10' : 'Use Code: WELCOME10'}
             </span>
           </div>
