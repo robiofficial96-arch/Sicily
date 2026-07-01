@@ -59,9 +59,6 @@ export default function ExitIntentPopup() {
 
       {/* Card container */}
       <div className="relative w-full max-w-md bg-white rounded-2xl border border-brand-border shadow-2xl overflow-hidden z-10 animate-scale-up">
-        {/* Top accent stripe */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-brand-secondary via-[#C6A15B] to-brand-primary" />
-
         <div className="flex flex-col items-center text-center gap-5 p-6 md:p-8">
           {/* Close Button */}
           <button

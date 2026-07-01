@@ -58,12 +58,10 @@ export default function AccountPage() {
       {user ? (
         /* ── LOGGED IN PROFILE CARD ── */
         <div className="bg-white border border-brand-border rounded-2xl shadow-xl overflow-hidden animate-fade-up">
-          <div className="h-1.5 w-full bg-gradient-to-r from-brand-secondary via-[#C6A15B] to-brand-primary" />
-
           <div className="p-6 space-y-6">
             {/* User Meta */}
             <div className="flex items-center gap-4 border-b border-brand-border pb-5">
-              <img src={user.avatar} alt={user.name} className="h-14 w-14 rounded-full object-cover border-2 border-[#C6A15B]" />
+              <img src={user.avatar} alt={user.name} className="h-14 w-14 rounded-full object-cover border-2 border-brand-primary/30" />
               <div>
                 <h2 className="font-serif text-lg font-semibold text-brand-text">{user.name}</h2>
                 <p className="text-xs text-brand-muted font-semibold">{user.email}</p>
@@ -127,11 +125,9 @@ export default function AccountPage() {
       ) : (
         /* ── MOCK GOOGLE LOGIN CARD ── */
         <div className="bg-white border border-brand-border rounded-2xl shadow-xl overflow-hidden text-center animate-fade-up">
-          <div className="h-1.5 w-full bg-gradient-to-r from-brand-secondary via-[#C6A15B] to-brand-primary" />
-
           <div className="p-6 space-y-6">
             <div className="space-y-2.5">
-              <div className="h-14 w-14 rounded-full border-2 border-[#C6A15B] flex items-center justify-center text-[#C6A15B] mx-auto">
+              <div className="h-14 w-14 rounded-full bg-brand-primary/8 flex items-center justify-center text-brand-primary mx-auto">
                 <User className="h-6 w-6" strokeWidth={1.5} />
               </div>
               <h2 className="font-serif text-xl font-semibold text-brand-text">
@@ -148,13 +144,16 @@ export default function AccountPage() {
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="w-full py-3.5 px-6 rounded-full border border-brand-border bg-white hover:bg-brand-surface hover:border-[#C6A15B]/40 text-brand-text font-bold text-xs transition-all flex items-center justify-center gap-3 shadow-sm hover:shadow-md disabled:opacity-60"
+              className="w-full py-3 px-6 rounded-lg border border-brand-border bg-white hover:bg-brand-surface hover:shadow-md text-brand-text font-semibold text-sm transition-all flex items-center justify-center gap-3 shadow-sm disabled:opacity-60"
             >
               {loading ? (
                 <div className="h-5 w-5 rounded-full border-2 border-brand-primary border-t-transparent animate-spin" />
               ) : (
                 <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24">
-                  <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.13-5.136 4.13A5.873 5.873 0 0 1 8 12.657a5.873 5.873 0 0 1 5.99-5.875c1.616 0 3.084.62 4.19 1.63l3.076-3.077A10.12 10.12 0 0 0 14 1.13c-5.99 0-10.87 4.88-10.87 10.87s4.88 10.87 10.87 10.87c6.264 0 10.422-4.401 10.422-10.603 0-.649-.078-1.258-.173-1.785H12.24Z"/>
+                  <path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3.01h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"/>
+                  <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3.01c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.95H1.27v3.11C3.25 21.3 7.31 24 12 24Z"/>
+                  <path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28V6.61H1.27A11.98 11.98 0 0 0 0 12c0 1.94.46 3.76 1.27 5.39l4-3.11Z"/>
+                  <path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.7 1.27 6.61l4 3.11C6.22 6.88 8.87 4.77 12 4.77Z"/>
                 </svg>
               )}
               <span>

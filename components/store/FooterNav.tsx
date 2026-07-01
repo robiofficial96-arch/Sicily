@@ -28,9 +28,6 @@ export default function FooterNav() {
           DESKTOP FOOTER (Also visible on Mobile)
       ════════════════════════════════════════════ */}
       <footer className="bg-[#14201D] text-[#F2EDE3] mt-0 mb-16 md:mb-0">
-        {/* Top accent stripe */}
-        <div className="h-1 w-full bg-gradient-to-r from-brand-secondary via-[#C6A15B] to-brand-primary" />
-
         {/* Top section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-14 pb-10 grid grid-cols-1 md:grid-cols-4 gap-10">
 
