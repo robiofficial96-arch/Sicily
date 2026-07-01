@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { Heart, X, Search, Crown, Flower2, Sprout, Frame } from 'lucide-react';
+import { Heart, Search, Crown, Flower2, Sprout, Frame } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -39,21 +39,27 @@ export default function Navbar() {
           {/* Header Row: Hamburger (left) | Logo (center) | Wishlist (right) */}
           <div className="grid grid-cols-3 items-center gap-4">
 
-            {/* Left: Hamburger Menu Trigger (staggered bars) */}
+            {/* Left: Hamburger Menu Trigger (animated bars → X) */}
             <div className="flex items-center justify-start">
               <button
                 onClick={() => setMenuOpen(o => !o)}
-                className="p-2 -ml-2 flex items-center justify-center text-brand-text hover:text-[#C6A15B] active:scale-95 focus:outline-none transition-all duration-200"
+                aria-label="Menu"
+                className="p-2 -ml-2 flex items-center justify-center text-brand-text hover:text-[#C6A15B] active:scale-95 focus:outline-none transition-colors duration-200"
               >
-                {menuOpen ? (
-                  <X className="h-6 w-6" strokeWidth={1.75} />
-                ) : (
-                  <span className="flex flex-col items-start gap-[5px]">
-                    <span className="h-[2px] w-6 rounded-full bg-current" />
-                    <span className="h-[2px] w-4 rounded-full bg-current" />
-                    <span className="h-[2px] w-5 rounded-full bg-current" />
-                  </span>
-                )}
+                <span className="relative block h-4 w-6">
+                  <span
+                    className="absolute top-0 left-0 h-[2px] w-6 rounded-full bg-current transition-transform duration-300 ease-out origin-center"
+                    style={{ transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'translateY(0) rotate(0deg)' }}
+                  />
+                  <span
+                    className="absolute top-1/2 left-0 -translate-y-1/2 h-[2px] w-4 rounded-full bg-current transition-all duration-200 ease-out"
+                    style={{ opacity: menuOpen ? 0 : 1 }}
+                  />
+                  <span
+                    className="absolute bottom-0 left-0 h-[2px] w-6 rounded-full bg-current transition-transform duration-300 ease-out origin-center"
+                    style={{ transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'translateY(0) rotate(0deg)' }}
+                  />
+                </span>
               </button>
             </div>
 
