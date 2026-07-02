@@ -183,6 +183,8 @@ export default function CheckoutForm({
           </label>
           <input
             type="text"
+            name="name"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={locale === 'bn' ? 'নাম লিখুন...' : 'Enter your name...'}
@@ -198,6 +200,9 @@ export default function CheckoutForm({
           </label>
           <input
             type="tel"
+            name="tel"
+            autoComplete="tel"
+            inputMode="numeric"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder={locale === 'bn' ? '০১৭XXXXXXXX' : '017XXXXXXXX'}
@@ -235,6 +240,8 @@ export default function CheckoutForm({
             {locale === 'bn' ? 'পূর্ণাঙ্গ ঠিকানা (গ্রাম, রোড, থানা) *' : 'Full Delivery Address (Street, Area, Upazila) *'}
           </label>
           <textarea
+            name="street-address"
+            autoComplete="street-address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder={locale === 'bn' ? 'আপনার পূর্ণাঙ্গ ঠিকানা লিখুন...' : 'Enter your detailed street address...'}
