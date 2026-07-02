@@ -482,22 +482,18 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         {/* Right Column: Title, pricing & options */}
         <div className="space-y-6">
           <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              {salePrice !== null && (
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-brand-secondary uppercase tracking-wider">
-                  Sale
-                </span>
-              )}
-              {stockCount <= 5 && (
+            {stockCount <= 5 && (
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-gradient-to-r from-brand-secondary to-brand-secondary-dark uppercase tracking-wider">
                   {locale === 'bn' ? `${stockCount}টি বাকি` : `Only ${stockCount} left`}
                 </span>
-              )}
-            </div>
+              </div>
+            )}
 
             <h1 className="font-serif text-2xl md:text-4xl font-semibold text-brand-text leading-tight pt-1">
               {nameLabel}
             </h1>
+            <p className="text-xs md:text-sm text-brand-muted leading-relaxed pt-1">{shortDesc}</p>
 
             <div className="flex items-center gap-2 pt-1">
               <div className="flex items-center text-[#C6A15B]">
@@ -544,68 +540,29 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          {/* Description */}
-          <div className="space-y-2">
-            <h3 className="font-serif font-semibold text-sm text-brand-text">
-              {locale === 'bn' ? 'পণ্য বিবরণী' : 'Product Description'}
-            </h3>
-            <p className="text-xs md:text-sm text-brand-muted leading-relaxed">
-              {desc}
-            </p>
-          </div>
-
-          {/* Options: Colors & Sizes */}
-          <div className="space-y-4 pt-4 border-t border-brand-border">
-            {selectedColor && (
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-brand-muted">
-                  {locale === 'bn' ? `কালার নির্বাচন করুন: ${selectedColor.bn}` : `Select Color: ${selectedColor.en}`}
-                </span>
-                <div className="flex gap-3">
-                  {product.colors.map((color) => (
-                    <button
-                      key={color.en}
-                      onClick={() => setSelectedColor(color)}
-                      className={`h-8 w-8 rounded-full border-2 transition-all-custom flex items-center justify-center ${
-                        selectedColor.en === color.en 
-                          ? 'border-brand-primary scale-110 shadow-md' 
-                          : 'border-transparent'
-                      }`}
-                      style={{ backgroundColor: color.hex }}
-                      title={locale === 'bn' ? color.bn : color.en}
-                    >
-                      {selectedColor.en === color.en && (
-                        <span className={`h-2 w-2 rounded-full ${color.hex === '#FFFFFF' ? 'bg-black' : 'bg-white'}`} />
-                      )}
-                    </button>
-                  ))}
-                </div>
+          {/* Options: Sizes Only */}
+          {product.sizes && product.sizes.length > 0 && (
+            <div className="space-y-2 pt-4 border-t border-brand-border">
+              <span className="text-xs font-bold text-brand-muted">
+                {locale === 'bn' ? 'সাইজ (দাম পরিবর্তন হবে):' : 'Size (price varies):'}
+              </span>
+              <div className="flex gap-2 flex-wrap">
+                {product.sizes.map((size) => (
+                  <button
+                    key={size.en}
+                    onClick={() => setSelectedSize(size)}
+                    className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all-custom ${
+                      selectedSize?.en === size.en
+                        ? 'bg-brand-primary border-brand-primary text-white'
+                        : 'bg-white border-brand-border text-brand-text hover:border-brand-primary/40'
+                    }`}
+                  >
+                    {locale === 'bn' ? size.bn : size.en}
+                  </button>
+                ))}
               </div>
-            )}
-
-            {product.sizes && (
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-brand-muted">
-                  {locale === 'bn' ? 'সাইজ (দাম পরিবর্তন হবে):' : 'Size (price varies):'}
-                </span>
-                <div className="flex gap-2 flex-wrap">
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size.en}
-                      onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all-custom ${
-                        selectedSize?.en === size.en
-                          ? 'bg-brand-primary border-brand-primary text-white'
-                          : 'bg-white border-brand-border text-brand-text hover:border-brand-primary/40'
-                      }`}
-                    >
-                      {locale === 'bn' ? size.bn : size.en}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Quantity selector & Primary Order CTA */}
           <div className="space-y-4 pt-6 border-t border-brand-border">
@@ -639,6 +596,16 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
 
+      {/* Detailed Description */}
+      <div className="space-y-3 pt-2">
+        <h3 className="font-serif font-semibold text-base text-brand-text">
+          {locale === 'bn' ? 'বিস্তারিত বিবরণ' : 'Detailed Description'}
+        </h3>
+        <p className="whitespace-pre-line text-xs md:text-sm text-brand-muted leading-relaxed">
+          {desc}
+        </p>
+      </div>
+
       {/* Product Benefits Section */}
       <div className="bg-brand-surface border border-brand-border rounded-2xl p-6 md:p-8 space-y-6">
         <h3 className="font-serif font-semibold text-brand-text text-base border-b border-brand-border pb-3 flex items-center gap-2">
@@ -666,7 +633,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         {/* Title */}
         <div className="text-center space-y-2 border-b border-brand-border pb-4">
           <h2 className="font-serif text-xl md:text-2xl font-semibold text-brand-text">
-            {locale === 'bn' ? 'অর্ডার করতে নিচের ফর্মটি পূরণ করুন' : 'Fill out the form below to order'}
+            {locale === 'bn' ? 'অर्डर করতে নিচের ফর্মটি পূরণ করুন' : 'Fill out the form below to order'}
           </h2>
           <p className="text-xs text-brand-muted font-bold">
             {locale === 'bn' ? 'আমাদের প্রতিনিধি কল করে অর্ডার কনফার্ম করবেন। কোনো অগ্রিম পেমেন্ট লাগবে না।' : 'No advance payment needed, pay upon receipt.'}
@@ -675,12 +642,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
         {/* Order Details Preview summary */}
         <div className="bg-brand-surface border border-brand-border rounded-xl p-4 flex gap-4 items-center text-xs">
-          <img src={product.images[0]} className="h-12 w-12 rounded-lg object-cover border border-brand-border" />
+          <img src={product.images[activeImage]} className="h-12 w-12 rounded-lg object-cover border border-brand-border" />
           <div className="flex-1 min-w-0">
             <span className="font-bold text-brand-text truncate block">{nameLabel}</span>
             <span className="text-[10px] text-brand-muted block mt-0.5">
-              {selectedColor && `${locale === 'bn' ? 'রঙ: ' + selectedColor.bn : 'Color: ' + selectedColor.en}`}
-              {selectedSize && ` / ${locale === 'bn' ? 'সাইজ: ' + selectedSize.bn : 'Size: ' + selectedSize.en}`}
+              {selectedSize && `${locale === 'bn' ? 'সাইজ: ' + selectedSize.bn : 'Size: ' + selectedSize.en}`}
             </span>
           </div>
           <div className="text-right">

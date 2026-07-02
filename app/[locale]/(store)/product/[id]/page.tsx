@@ -215,10 +215,46 @@ export default function ProductViewPage({ params }: { params: { id: string } }) 
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    const matched = mockProducts[params.id] || mockProducts['1'];
+    const stored = localStorage.getItem('sicily_products_list');
+    let loadedProducts: Record<string, Product> = {};
+
+    if (stored) {
+      try {
+        const list: any[] = JSON.parse(stored);
+        list.forEach((p) => {
+          loadedProducts[p.id] = {
+            id: p.id,
+            name_en: p.name_en,
+            name_bn: p.name_bn,
+            price: p.price,
+            sale_price: p.sale_price,
+            images: p.images || [p.image || '/02.09.23.jpg'],
+            category: p.category,
+            short_desc_en: p.short_desc_en || p.name_en,
+            short_desc_bn: p.short_desc_bn || p.name_bn,
+            desc_en: p.desc_en || p.name_en,
+            desc_bn: p.desc_bn || p.name_bn,
+            sizes: p.sizes,
+            stock: p.stock !== undefined ? p.stock : 10
+          };
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    const merged = { ...mockProducts, ...loadedProducts };
+    const matched = merged[params.id] || merged['1'];
+    
     setProduct(matched);
     setActiveImage(0);
-    if (matched?.sizes) setSelectedSize(matched.sizes[0]);
+    if (matched) {
+      if (matched.sizes && matched.sizes.length > 0) {
+        setSelectedSize(matched.sizes[0]);
+      } else {
+        setSelectedSize(null);
+      }
+    }
   }, [params.id]);
 
   if (!product) {
@@ -439,7 +475,7 @@ export default function ProductViewPage({ params }: { params: { id: string } }) 
         <h3 className="font-serif font-semibold text-base text-brand-text">
           {locale === 'bn' ? 'বিস্তারিত বিবরণ' : 'Detailed Description'}
         </h3>
-        <p className="text-xs md:text-sm text-brand-muted leading-relaxed">{fullDesc}</p>
+        <p className="whitespace-pre-line text-xs md:text-sm text-brand-muted leading-relaxed">{fullDesc}</p>
       </div>
 
       {/* Suggested Products (same card style as homepage) */}
