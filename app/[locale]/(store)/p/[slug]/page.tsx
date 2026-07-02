@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocale } from 'next-intl';
 import { useCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
-import { Star, ShoppingBag, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin } from 'lucide-react';
+import { Star, ShoppingBag, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin, PackageCheck, PackageX, Flame } from 'lucide-react';
 import Link from 'next/link';
+
+interface SizeOption { en: string; bn: string; price: number; sale_price: number | null; }
 
 interface Product {
   id: string;
@@ -13,14 +15,16 @@ interface Product {
   name_bn: string;
   price: number;
   sale_price: number | null;
-  image: string;
+  images: string[];
   category: string;
   rating: number;
   reviews: number;
+  short_desc_en: string;
+  short_desc_bn: string;
   desc_en: string;
   desc_bn: string;
   colors: { en: string; bn: string; hex: string }[];
-  sizes?: { en: string; bn: string }[];
+  sizes?: SizeOption[];
   stock?: number;
 }
 
@@ -31,19 +35,21 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'প্রিমিয়াম কোয়ালিটি বার্ড নেস্ট',
     price: 1250,
     sale_price: 990,
-    image: '/02.09.23.jpg',
+    images: ['/02.09.23.jpg'],
     category: 'hangers',
     rating: 4.8,
     reviews: 24,
-    desc_en: 'Enhance your wall aesthetics with this handcrafted premium metal flower hanger. Sourced from high-grade anti-rust painted iron. Extremely durable and modern geometric design.',
-    desc_bn: 'আপনার দেয়ালের সৌন্দর্য বাড়াতে আমাদের হাতে তৈরি এই প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গারটি অনন্য। মরিচা-প্রতিরোধক পেইন্ট করা উচ্চ মানের লোহা দ্বারা তৈরি। দীর্ঘস্থায়ী এবং আধুনিক জ্যামিতিক নকশা।',
+    short_desc_en: 'Handcrafted anti-rust metal hanger with a modern geometric silhouette.',
+    short_desc_bn: 'হাতে তৈরি মরিচা-প্রতিরোধক মেটাল হ্যাঙ্গার, আধুনিক জ্যামিতিক ডিজাইনে।',
+    desc_en: 'Enhance your wall aesthetics with this handcrafted premium metal flower hanger.',
+    desc_bn: 'আপনার দেয়ালের সৌন্দর্য বাড়াতে আমাদের হাতে তৈরি এই প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গারটি অনন্য।',
     colors: [
       { en: 'Matte Black', bn: 'ম্যাট ব্ল্যাক', hex: '#111827' },
       { en: 'Classic Gold', bn: 'ক্লাসিক গোল্ড', hex: '#D97706' }
     ],
     sizes: [
-      { en: 'Small (12")', bn: 'ছোট (১২ ইঞ্চি)' },
-      { en: 'Medium (18")', bn: 'মাঝারি (১৮ ইঞ্চি)' }
+      { en: '12"', bn: '১২ ইঞ্চি', price: 1250, sale_price: 990 },
+      { en: '18"', bn: '১৮ ইঞ্চি', price: 1550, sale_price: 1250 }
     ],
     stock: 8
   },
@@ -53,12 +59,14 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'ঘর সাজান আভিজাত্যে – প্রিমিয়াম অর্কিড!',
     price: 850,
     sale_price: null,
-    image: '/37-5.jpg',
+    images: ['/37-5.jpg'],
     category: 'flowers',
     rating: 4.9,
     reviews: 18,
-    desc_en: 'Beautifully wrapped handcrafted pastel paper tulips. Perfect for dining tables, study desks, or gifting on special occasions. Includes high-durability wrapping sheets.',
-    desc_bn: 'চমৎকারভাবে মোড়ানো হাতে তৈরি পেস্টেল কাগজের টিউলিপের তোড়া। ডাইনিং টেবিল, স্টাডি ডেস্ক বা বিশেষ অনুষ্ঠানে উপহার দেয়ার জন্য আদর্শ। এর সাথে রয়েছে দীর্ঘস্থায়ী র‍্যাপিং শিট।',
+    short_desc_en: 'Handcrafted pastel paper tulips, perfect for tables and gifting.',
+    short_desc_bn: 'হাতে তৈরি পেস্টেল কাগজের টিউলিপ, টেবিল সাজানো ও উপহারের জন্য উপযুক্ত।',
+    desc_en: 'Beautifully wrapped handcrafted pastel paper tulips.',
+    desc_bn: 'চমৎকারভাবে মোড়ানো হাতে তৈরি পেস্টেল কাগজের টিউলিপের তোড়া।',
     colors: [
       { en: 'Pastel Pink', bn: 'পেস্টেল পিঙ্ক', hex: '#F472B6' },
       { en: 'Soft Yellow', bn: 'সফট ইয়েলো', hex: '#FDE047' }
@@ -71,12 +79,14 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'প্রিমিয়াম এরিকা পাম, বড় কাঠের টব সহ!',
     price: 1500,
     sale_price: 1200,
-    image: '/38-7.jpg',
+    images: ['/38-7.jpg'],
     category: 'frames',
     rating: 4.7,
     reviews: 32,
-    desc_en: 'Hand-polished solid mahogany wood frames carrying preserved dry flowers. Gives an organic vintage country look to any home interior decoration.',
-    desc_bn: 'প্রাকৃতিক শুকানো ফুল ধরে রাখা হাতে পালিশ করা সলিড মেহগনি কাঠের তৈরি ফ্রেম। যেকোনো বাড়ির ঘরের ভেতরে চমৎকার ভিন্টেজ লুক এনে দেয়।',
+    short_desc_en: 'Solid mahogany frame with preserved dry flowers, vintage country look.',
+    short_desc_bn: 'সলিড মেহগনি ফ্রেমে শুকানো ফুল, ভিন্টেজ কান্ট্রি লুক।',
+    desc_en: 'Hand-polished solid mahogany wood frames carrying preserved dry flowers. Gives an organic vintage country look to any home interior decoration. Each frame is sealed to prevent moisture damage, keeping the dried florals intact for years without fading.',
+    desc_bn: 'প্রাকৃতিক শুকানো ফুল ধরে রাখা হাতে পালিশ করা সলিড মেহগনি কাঠের তৈরি ফ্রেম। যেকোনো বাড়ির ঘরের ভেতরে চমৎকার ভিন্টেজ লুক এনে দেয়। প্রতিটি ফ্রেম আর্দ্রতা প্রতিরোধী সিল করা, যা বছরের পর বছর ফুলের রঙ অক্ষুণ্ণ রাখে।',
     colors: [
       { en: 'Rustic Oak', bn: 'রাস্টিক ওক', hex: '#78350F' },
       { en: 'Dark Mahogany', bn: 'ডার্ক মেহগনি', hex: '#451A03' }
@@ -89,12 +99,14 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'সিরামিক টবে প্রিমিয়াম অর্কিড – ঘরের আভিজাত্য!',
     price: 920,
     sale_price: 750,
-    image: '/47-3.jpg',
+    images: ['/47-3.jpg'],
     category: 'flowers',
     rating: 4.6,
     reviews: 14,
-    desc_en: 'Premium ceramic vase with minimal modern lines, ideal for showing off fresh or dry floral bouquets.',
-    desc_bn: 'আধুনিক ডিজাইনের মিনিমাল সিরামিক ফুলদানি, যা সতেজ বা শুকানো ফুলের তোড়া সাজিয়ে রাখার জন্য আদর্শ।',
+    short_desc_en: 'Premium ceramic vase with minimal modern lines.',
+    short_desc_bn: 'আধুনিক ডিজাইনের মিনিমাল সিরামিক ফুলদানি।',
+    desc_en: 'Premium ceramic vase with minimal modern lines, ideal for showing off bouquets.',
+    desc_bn: 'আধুনিক ডিজাইনের মিনিমাল সিরামিক ফুলদানি, যা ফুলের তোড়া সাজিয়ে রাখার জন্য আদর্শ।',
     colors: [{ en: 'Milky White', bn: 'মিল্কি হোয়াইট', hex: '#FFFFFF' }],
     stock: 3
   },
@@ -104,10 +116,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'হলুদ অর্কিডের স্নিগ্ধতায় সাজুক ঘর!',
     price: 1100,
     sale_price: null,
-    image: '/49.jpg',
+    images: ['/49.jpg'],
     category: 'hangers',
     rating: 4.8,
     reviews: 21,
+    short_desc_en: 'Boho style macrame wall hanging handcrafted with 100% natural cotton cord.',
+    short_desc_bn: '১০০% প্রাকৃতিক সুতি সুতা দিয়ে তৈরি বোহো স্টাইলের ম্যাক্রামে দেয়াল সজ্জা।',
     desc_en: 'Boho style macrame wall hanging handcrafted with 100% natural cotton cord on driftwood.',
     desc_bn: '১০০% প্রাকৃতিক সুতি সুতা দিয়ে তৈরি বোহো স্টাইলের ম্যাক্রামে দেয়াল সজ্জা শোপিস।',
     colors: [{ en: 'Off White', bn: 'অফ হোয়াইট', hex: '#F9F6F0' }],
@@ -119,13 +133,15 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'মেটাল স্ট্যান্ড উইথ ফ্লাওয়ার টব – মডার্ন হোম ডেকোর!',
     price: 1550,
     sale_price: 1390,
-    image: '/51-2.jpg',
+    images: ['/51-2.jpg'],
     category: 'hangers',
     rating: 4.9,
     reviews: 15,
+    short_desc_en: 'Double decker anti-rust metal plant stand.',
+    short_desc_bn: 'মরিচা-প্রতিরোধক মেটাল ডাবল ডেকার প্ল্যান্ট স্ট্যান্ড।',
     desc_en: 'Double decker anti-rust metal plant stand for organizing multiple tubs.',
     desc_bn: 'মরিচা-প্রতিরোধক মেটাল ডাবল ডেকার প্ল্যান্ট স্ট্যান্ড, যা একসাথে কয়েকটি টব রাখার জন্য চমৎকার।',
-    colors: [{ en: 'Classic Gold', bn: 'ক্লাসিক গোল্ড', hex: '#D97706' }],
+    colors: [{ en: 'Classic Gold', bn: 'ক্লাসিক GOLD', hex: '#D97706' }],
     stock: 15
   },
   '8': {
@@ -134,10 +150,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'নজরকাড়া প্রিমিয়াম অর্কিড, আকর্ষণীয় সিরামিক টব সহ!',
     price: 950,
     sale_price: 850,
-    image: '/55-3.jpg',
+    images: ['/55-3.jpg'],
     category: 'flowers',
     rating: 4.7,
     reviews: 28,
+    short_desc_en: 'Gorgeous handcrafted pastel roses bundle.',
+    short_desc_bn: 'হাতে তৈরি আকর্ষণীয় পেস্টেল গোলাপের তোড়া।',
     desc_en: 'Gorgeous handcrafted pastel roses bundle with premium gift wrapping sheets.',
     desc_bn: 'হাতে তৈরি আকর্ষণীয় পেস্টেল গোলাপের তোড়া, বিশেষ গিফট র‍্যাপিং পেপার সহ মোড়ানো।',
     colors: [{ en: 'Pastel Rose Pink', bn: 'গোলাপী', hex: '#FDA4AF' }],
@@ -149,10 +167,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'হ্যান্ডক্রাফটেড মেহগনি ফ্রেম',
     price: 1800,
     sale_price: 1490,
-    image: '/38-7.jpg',
+    images: ['/38-7.jpg'],
     category: 'frames',
     rating: 4.8,
     reviews: 19,
+    short_desc_en: 'Luxury mahogany wooden frame with dried botanicals.',
+    short_desc_bn: 'আকর্ষণীয় মেহগনি কাঠের শৌখিন ফ্রেম।',
     desc_en: 'Luxury mahogany wooden frame with glass front and dried botanicals detail.',
     desc_bn: 'আকর্ষণীয় মেহগনি কাঠের শৌখিন ফ্রেম, সামনের কাচ ও ভেতর সুরক্ষিত প্রাকৃতিক শুকনো ফুল সহ।',
     colors: [{ en: 'Mahogany Brown', bn: 'মেহগনি ব্রাউন', hex: '#451A03' }],
@@ -164,10 +184,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া',
     price: 1150,
     sale_price: 990,
-    image: '/Magnolia-Flower.png',
+    images: ['/Magnolia-Flower.png'],
     category: 'flowers',
     rating: 4.5,
     reviews: 11,
+    short_desc_en: 'Premium Magnolia plant in ceramic pot.',
+    short_desc_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া গাছ।',
     desc_en: 'Premium Magnolia plant in ceramic pot, perfect for home and workspace.',
     desc_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া গাছ, বাসা ও অফিসের অভ্যন্তরীণ সাজসজ্জায় প্রাণবন্ত লুক এনে দেবে।',
     colors: [{ en: 'Magnolia White', bn: 'ম্যাগনোলিয়া হোয়াইট', hex: '#FFFFFF' }],
@@ -179,10 +201,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'মডার্ন এ-ফ্রেম ওয়াল শেলফ – ইনডোর ডেকোরের সেরা কম্বো!',
     price: 1350,
     sale_price: null,
-    image: '/file_000000001bbc720894d5059a36ed2d3e.png',
+    images: ['/file_000000001bbc720894d5059a36ed2d3e.png'],
     category: 'hangers',
     rating: 4.7,
     reviews: 13,
+    short_desc_en: 'Modern design A-Frame wood wall shelf.',
+    short_desc_bn: 'আধুনিক ডিজাইনের এ-ফ্রেম কাঠের দেয়াল তাক।',
     desc_en: 'Modern design A-Frame wood wall shelf with beautiful artificial greenery.',
     desc_bn: 'আধুনিক ডিজাইনের এ-ফ্রেম কাঠের দেয়াল তাক ও চমৎকার কৃত্রিম লতাপাতা কম্বো।',
     colors: [{ en: 'Natural Wood & Green', bn: 'কাঠ ও সবুজ', hex: '#F9F6F0' }],
@@ -194,10 +218,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'ইনডোর ডেকোরে ইউনিক লুক – থাই বানানা ট্রি!',
     price: 2200,
     sale_price: 1890,
-    image: '/37-5.jpg',
+    images: ['/37-5.jpg'],
     category: 'plants',
-    rating: 4.9,
+    rating: 4.8,
     reviews: 22,
+    short_desc_en: 'Premium geometric ceramic plant pot, extremely stylish.',
+    short_desc_bn: 'আকর্ষণীয় জ্যামিতিক সিরামিক টব।',
     desc_en: 'Premium geometric ceramic plant pot, extremely stylish and suitable for large plants.',
     desc_bn: 'আকর্ষণীয় জ্যামিতিক সিরামিক টব, যা আপনার ঘরের বড় বড় ইনডোর গাছের জন্য দারুণ মানানসই।',
     colors: [{ en: 'Charcoal Black', bn: 'কয়লা কালো', hex: '#1E293B' }],
@@ -209,10 +235,12 @@ const mockProducts: Record<string, Product> = {
     name_bn: 'সবুজ ফার্ন প্ল্যান্ট',
     price: 1200,
     sale_price: 990,
-    image: '/55-3.jpg',
+    images: ['/55-3.jpg'],
     category: 'plants',
     rating: 4.6,
     reviews: 17,
+    short_desc_en: 'Lush green artificial fern plant in simple white pot.',
+    short_desc_bn: 'আকর্ষণীয় চিরসবুজ কৃত্রিম ফার্ন গাছ ও সাদা টব।',
     desc_en: 'Lush green artificial fern plant in simple white pot, maintenance free.',
     desc_bn: 'আকর্ষণীয় চিরসবুজ কৃত্রিম ফার্ন গাছ ও সাদা টব, যা পানি বা রোদের কোনো ঝামেলা ছাড়াই সতেজ দেখাবে।',
     colors: [{ en: 'Green', bn: 'সবুজ', hex: '#10B981' }],
@@ -244,8 +272,9 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedColor, setSelectedColor] = useState<{ en: string; bn: string; hex: string } | null>(null);
-  const [selectedSize, setSelectedSize] = useState<{ en: string; bn: string } | null>(null);
+  const [selectedSize, setSelectedSize] = useState<SizeOption | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState(0);
 
   // Embedded Order Form States
   const [name, setName] = useState('');
@@ -271,10 +300,12 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             name_bn: p.name_bn,
             price: p.price,
             sale_price: p.sale_price,
-            image: p.image,
+            images: p.images || [p.image || '/02.09.23.jpg'],
             category: p.category,
             rating: p.rating || 4.8,
             reviews: p.reviews || 22,
+            short_desc_en: p.short_desc_en || p.name_en,
+            short_desc_bn: p.short_desc_bn || p.name_bn,
             desc_en: p.desc_en || p.name_en,
             desc_bn: p.desc_bn || p.name_bn,
             colors: p.colors || [
@@ -293,10 +324,13 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     const matched = merged[params.slug] || merged['1'];
     
     setProduct(matched);
+    setActiveImage(0);
     if (matched) {
       setSelectedColor(matched.colors[0]);
-      if (matched.sizes) {
+      if (matched.sizes && matched.sizes.length > 0) {
         setSelectedSize(matched.sizes[0]);
+      } else {
+        setSelectedSize(null);
       }
     }
   }, [params.slug]);
@@ -319,8 +353,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     );
   }
 
-  const activePrice = product.sale_price !== null ? product.sale_price : product.price;
+  const price = selectedSize ? selectedSize.price : product.price;
+  const salePrice = selectedSize ? selectedSize.sale_price : product.sale_price;
+  const activePrice = salePrice ?? price;
   const nameLabel = locale === 'bn' ? product.name_bn : product.name_en;
+  const shortDesc = locale === 'bn' ? product.short_desc_bn : product.short_desc_en;
   const desc = locale === 'bn' ? product.desc_bn : product.desc_en;
   const stockCount = product.stock !== undefined ? product.stock : 5;
 
@@ -391,8 +428,24 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     }, 1000);
   };
 
+  const getBenefits = () => {
+    if (product.category === 'hangers' || product.category === 'wall-stand') {
+      return [
+        locale === 'bn' ? '১০০% মরিচা-প্রতিরোধক ও উন্নতমানের ফিনিশিং পেইন্ট।' : '100% Anti-rust powder coat for outdoor durability.',
+        locale === 'bn' ? 'সম্পূর্ণ হাতে তৈরি আকর্ষণীয় জ্যামিতিক নকশা।' : 'Handcrafted geometric aesthetics for premium homes.',
+        locale === 'bn' ? 'সহজে ওয়ালে হ্যাং করার স্ক্রু ও গাইডলাইন সহ।' : 'Quick 1-minute mounting kits included for free.'
+      ];
+    }
+    return [
+      locale === 'bn' ? '১০০% প্রিমিয়াম লুক এবং হাই-ফিনিশ লাক্সারি ডিজাইন।' : '100% Premium look and high-finish luxury design.',
+      locale === 'bn' ? 'ইনডোর বা ড্রয়িং রুম ডেকোরেশনের জন্য একদম পারফেক্ট।' : 'Perfect for indoor, dining, or living room decoration.',
+      locale === 'bn' ? 'অতিরিক্ত যত্ন সহকারে নিরাপদ প্যাকেজিং এ সুরক্ষিত ডেলিভারি।' : 'Carefully packaged to ensure damage-free safe delivery.'
+    ];
+  };
+  const benefits = getBenefits();
+
   return (
-    <div className="space-y-12 pb-24">
+    <div className="space-y-12 pb-24 px-4 sm:px-0">
       {/* Back Button */}
       <Link 
         href={`/${locale}/shop`}
@@ -404,22 +457,33 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
       {/* Grid: Image and Main Info */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {/* Left Column: Product Image */}
-        <div className="space-y-4">
-          <div className="aspect-square rounded-3xl overflow-hidden bg-brand-surface border border-brand-border shadow-inner">
-            <img 
-              src={product.image} 
-              alt={nameLabel} 
-              className="h-full w-full object-cover" 
-            />
+        {/* Left Column: Product Image Gallery */}
+        <div className="space-y-3">
+          <div className="aspect-square rounded-2xl overflow-hidden bg-brand-surface border border-brand-border">
+            <img src={product.images[activeImage]} alt={nameLabel} className="h-full w-full object-cover" />
           </div>
+          {product.images.length > 1 && (
+            <div className="flex gap-2.5">
+              {product.images.map((img, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveImage(i)}
+                  className={`h-16 w-16 sm:h-20 sm:w-20 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
+                    activeImage === i ? 'border-brand-primary' : 'border-brand-border opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <img src={img} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Right Column: Title, pricing & options */}
         <div className="space-y-6">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              {product.sale_price !== null && (
+              {salePrice !== null && (
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-brand-secondary uppercase tracking-wider">
                   Sale
                 </span>
@@ -447,15 +511,37 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           </div>
 
           {/* Pricing */}
-          <div className="flex items-baseline gap-4 p-4 rounded-2xl bg-brand-surface border border-brand-border">
-            {product.sale_price !== null ? (
-              <>
-                <span className="text-3xl font-black text-brand-secondary">৳{product.sale_price}</span>
-                <span className="text-sm text-brand-muted line-through">৳{product.price}</span>
-              </>
-            ) : (
-              <span className="text-3xl font-black text-brand-text">৳{product.price}</span>
-            )}
+          <div className="p-4 rounded-xl bg-gradient-to-br from-brand-secondary/5 to-brand-surface border border-brand-secondary/15 flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="text-3xl font-bold text-brand-secondary">৳{activePrice}</span>
+              {salePrice !== null && (
+                <span className="text-sm text-brand-muted line-through">৳{price}</span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              {salePrice !== null && (
+                <span className="px-2 py-1 rounded-full bg-brand-secondary/10 text-brand-secondary text-[10px] font-bold">
+                  {Math.round(((price - salePrice) / price) * 100)}% {locale === 'bn' ? 'ছাড়' : 'OFF'}
+                </span>
+              )}
+              {stockCount === 0 ? (
+                <span className="flex items-center gap-1 text-xs font-bold text-brand-muted whitespace-nowrap">
+                  <PackageX className="h-3.5 w-3.5 flex-shrink-0" strokeWidth={1.75} />
+                  {locale === 'bn' ? 'স্টকে নেই' : 'Out of Stock'}
+                </span>
+              ) : stockCount <= 5 ? (
+                <span className="flex items-center gap-1 text-xs font-bold text-brand-primary whitespace-nowrap">
+                  <Flame className="h-3.5 w-3.5 flex-shrink-0" strokeWidth={1.75} />
+                  {locale === 'bn' ? `${stockCount}টি বাকি` : `${stockCount} left`}
+                </span>
+              ) : (
+                <span className="flex items-center gap-1 text-xs font-bold text-brand-primary whitespace-nowrap">
+                  <PackageCheck className="h-3.5 w-3.5 flex-shrink-0" strokeWidth={1.75} />
+                  {locale === 'bn' ? 'স্টকে আছে' : 'In Stock'}
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Description */}
@@ -500,9 +586,9 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             {product.sizes && (
               <div className="space-y-2">
                 <span className="text-xs font-bold text-brand-muted">
-                  {locale === 'bn' ? 'সাইজ:' : 'Size:'}
+                  {locale === 'bn' ? 'সাইজ (দাম পরিবর্তন হবে):' : 'Size (price varies):'}
                 </span>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   {product.sizes.map((size) => (
                     <button
                       key={size.en}
@@ -560,24 +646,12 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <span>{locale === 'bn' ? 'এই প্রোডাক্টের চমৎকার সুবিধাসমূহ' : 'Premium Product Features'}</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs md:text-sm font-semibold text-brand-text">
-          <div className="flex items-start gap-2.5">
-            <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
-            <p className="leading-relaxed">
-              {locale === 'bn' ? '১০০% মরিচা-প্রতিরোধক ও উন্নতমানের ফিনিশিং পেইন্ট।' : '100% Anti-rust powder coat for outdoor durability.'}
-            </p>
-          </div>
-          <div className="flex items-start gap-2.5">
-            <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
-            <p className="leading-relaxed">
-              {locale === 'bn' ? 'সম্পূর্ণ হাতে তৈরি আকর্ষণীয় জ্যামিতিক নকশা।' : 'Handcrafted geometric aesthetics for premium homes.'}
-            </p>
-          </div>
-          <div className="flex items-start gap-2.5">
-            <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
-            <p className="leading-relaxed">
-              {locale === 'bn' ? 'সহজে ওয়ালে হ্যাং করার স্ক্রু ও গাইডলাইন সহ।' : 'Quick 1-minute mounting kits included for free.'}
-            </p>
-          </div>
+          {benefits.map((benefit, idx) => (
+            <div key={idx} className="flex items-start gap-2.5">
+              <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
+              <p className="leading-relaxed">{benefit}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -595,13 +669,13 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             {locale === 'bn' ? 'অর্ডার করতে নিচের ফর্মটি পূরণ করুন' : 'Fill out the form below to order'}
           </h2>
           <p className="text-xs text-brand-muted font-bold">
-            {locale === 'bn' ? 'আমাদের প্রতিনিধি কল করে অর্ডার কনফার্ম করবেন।' : 'No advance payment needed, pay upon receipt.'}
+            {locale === 'bn' ? 'আমাদের প্রতিনিধি কল করে অর্ডার কনফার্ম করবেন। কোনো অগ্রিম পেমেন্ট লাগবে না।' : 'No advance payment needed, pay upon receipt.'}
           </p>
         </div>
 
         {/* Order Details Preview summary */}
         <div className="bg-brand-surface border border-brand-border rounded-xl p-4 flex gap-4 items-center text-xs">
-          <img src={product.image} className="h-12 w-12 rounded-lg object-cover border border-brand-border" />
+          <img src={product.images[0]} className="h-12 w-12 rounded-lg object-cover border border-brand-border" />
           <div className="flex-1 min-w-0">
             <span className="font-bold text-brand-text truncate block">{nameLabel}</span>
             <span className="text-[10px] text-brand-muted block mt-0.5">
