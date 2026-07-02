@@ -24,12 +24,12 @@ const CAT_ICONS = [
 
 /* ── PRODUCTS ── */
 const PRODUCTS = [
-  { id:'1', name_en:'Premium Metal Flower Hanger', name_bn:'প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গার', price:1250, sale_price:990,  image:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=500', rating:4.8, reviews:24, discount:'-21%', sizes:['12"','18"','24"'] },
-  { id:'2', name_en:'Pastel Tulip Bouquet',        name_bn:'পেস্টেল টিউলিপ তোড়া',               price:850,  sale_price:null,  image:'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=500', rating:4.9, reviews:18, discount:null,   sizes:['14"'] },
-  { id:'3', name_en:'Vintage Wooden Wall Frame',   name_bn:'ভিন্টেজ কাঠের ওয়াল ফ্রেম',          price:1500, sale_price:1200,  image:'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=500', rating:4.7, reviews:32, discount:'-20%', sizes:['12"','16"','20"'] },
-  { id:'4', name_en:'Rose Gold Candle Set',        name_bn:'রোজ গোল্ড ক্যান্ডেল সেট',           price:680,  sale_price:540,   image:'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&q=80&w=500', rating:5.0, reviews:9,  discount:'-21%', sizes:['6"'] },
-  { id:'5', name_en:'Ceramic Flower Vase',         name_bn:'সিরামিক ফ্লাওয়ার ভেজ',              price:920,  sale_price:750,   image:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&q=80&w=500', rating:4.6, reviews:14, discount:'-18%', sizes:['8"','10"'] },
-  { id:'6', name_en:'Macrame Wall Hanging',        name_bn:'ম্যাক্রামে ওয়াল হ্যাঙ্গিং',         price:1100, sale_price:null,  image:'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=500', rating:4.8, reviews:21, discount:null,   sizes:['24"','30"','36"'] },
+  { id:'1', name_en:'Premium Metal Flower Hanger', name_bn:'প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গার', price:1250, sale_price:990,  image:'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=500', rating:4.8, reviews:24, discount:'-21%', sizes:['12"','18"','24"'], stock:8 },
+  { id:'2', name_en:'Pastel Tulip Bouquet',        name_bn:'পেস্টেল টিউলিপ তোড়া',               price:850,  sale_price:null,  image:'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=500', rating:4.9, reviews:18, discount:null,   sizes:['14"'], stock:20 },
+  { id:'3', name_en:'Vintage Wooden Wall Frame',   name_bn:'ভিন্টেজ কাঠের ওয়াল ফ্রেম',          price:1500, sale_price:1200,  image:'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=500', rating:4.7, reviews:32, discount:'-20%', sizes:['12"','16"','20"'], stock:4 },
+  { id:'4', name_en:'Rose Gold Candle Set',        name_bn:'রোজ গোল্ড ক্যান্ডেল সেট',           price:680,  sale_price:540,   image:'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&q=80&w=500', rating:5.0, reviews:9,  discount:'-21%', sizes:['6"'], stock:12 },
+  { id:'5', name_en:'Ceramic Flower Vase',         name_bn:'সিরামিক ফ্লাওয়ার ভেজ',              price:920,  sale_price:750,   image:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&q=80&w=500', rating:4.6, reviews:14, discount:'-18%', sizes:['8"','10"'], stock:3 },
+  { id:'6', name_en:'Macrame Wall Hanging',        name_bn:'ম্যাক্রামে ওয়াল হ্যাঙ্গিং',         price:1100, sale_price:null,  image:'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=500', rating:4.8, reviews:21, discount:null,   sizes:['24"','30"','36"'], stock:15 },
 ];
 
 /* ── HERO SLIDER ────────────────────────────────────── */
@@ -157,17 +157,27 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
       </div>
 
       {/* Product Details Section */}
-      <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
-        <div>
+      <div className="p-4 flex-1 flex flex-col justify-between gap-3">
+        <div className="space-y-1.5">
           <h3 className="text-xs sm:text-sm font-semibold text-brand-text leading-snug line-clamp-2 hover:text-brand-primary transition-colors">
             <Link href={`/${locale}/p/${p.id}`}>{name}</Link>
           </h3>
 
-          {/* Price */}
-          <div className="flex items-baseline gap-1.5 mt-1.5">
+          {/* Price + Stock */}
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm sm:text-base font-bold text-brand-secondary">৳{price}</span>
             {p.sale_price && (
               <span className="text-[10px] text-brand-muted line-through">৳{p.price}</span>
+            )}
+            <span className="text-brand-border">|</span>
+            {p.stock <= 5 ? (
+              <span className="text-[10px] font-bold text-brand-secondary">
+                {locale === 'bn' ? `মাত্র ${p.stock}টি বাকি` : `Only ${p.stock} left`}
+              </span>
+            ) : (
+              <span className="text-[10px] font-bold text-brand-primary">
+                {locale === 'bn' ? 'স্টকে আছে' : 'In Stock'}
+              </span>
             )}
           </div>
         </div>
@@ -175,7 +185,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
         {/* Add to Cart Button (full-width, with Bangla label) */}
         <Link
           href={`/${locale}/p/${p.id}`}
-          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-full bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white text-[11px] font-bold shadow-sm hover:shadow-lg hover:shadow-brand-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+          className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white text-[11px] font-bold shadow-sm hover:shadow-lg hover:shadow-brand-primary/30 hover:-translate-y-0.5 transition-all duration-200"
         >
           <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
           <span>{locale === 'bn' ? 'কার্টে যোগ করুন' : 'Add to Cart'}</span>
