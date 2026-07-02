@@ -30,8 +30,8 @@ export const PRODUCTS: HomeProduct[] = [
   },
   { 
     id: '2', 
-    name_en: 'Pastel Tulip Bouquet', 
-    name_bn: 'পেস্টেল টিউলিপ তোড়া', 
+    name_en: 'Premium Orchid Bouquet', 
+    name_bn: 'ঘর সাজান আভিজাত্যে – প্রিমিয়াম অর্কিড!', 
     price: 850, 
     sale_price: null, 
     image: '/37-5.jpg', 
