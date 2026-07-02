@@ -164,7 +164,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
           </h3>
 
           {/* Price + Stock */}
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <span className="text-sm sm:text-base font-bold text-brand-secondary">৳{price}</span>
             {p.sale_price && (
               <span className="text-[10px] text-brand-muted line-through">৳{p.price}</span>
@@ -177,7 +177,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
             ) : p.stock <= 5 ? (
               <span className="flex items-center gap-1 text-[10px] font-bold text-brand-secondary whitespace-nowrap">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-secondary flex-shrink-0" />
-                {p.stock} {locale === 'bn' ? 'বাকি' : 'left'}
+                {locale === 'bn' ? `${p.stock}টি বাকি` : `${p.stock} left`}
               </span>
             ) : (
               <span className="text-[10px] font-bold text-brand-primary">
