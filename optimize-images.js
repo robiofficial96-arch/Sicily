@@ -11,7 +11,9 @@ const TARGET_IMAGES = [
   '47-3.jpg',
   '49.jpg',
   '51-2.jpg',
-  '55-3.jpg'
+  '55-3.jpg',
+  'file_000000001bbc720894d5059a36ed2d3e.png',
+  'Magnolia-Flower.png'
 ];
 
 async function optimize() {
@@ -31,16 +33,20 @@ async function optimize() {
     // Read the file buffer
     const buffer = fs.readFileSync(filePath);
     
-    // Process with sharp: resize to max 800px width/height (keeping aspect ratio) and set 80% quality
-    const optimizedBuffer = await sharp(buffer)
-      .resize({
-        width: 800,
-        height: 800,
-        fit: 'inside',
-        withoutEnlargement: true
-      })
-      .jpeg({ quality: 80, mozjpeg: true })
-      .toBuffer();
+    let pipeline = sharp(buffer).resize({
+      width: 800,
+      height: 800,
+      fit: 'inside',
+      withoutEnlargement: true
+    });
+
+    if (filename.endsWith('.png')) {
+      pipeline = pipeline.png({ quality: 80, compressionLevel: 9 });
+    } else {
+      pipeline = pipeline.jpeg({ quality: 80, mozjpeg: true });
+    }
+
+    const optimizedBuffer = await pipeline.toBuffer();
       
     // Write optimized buffer back to file
     fs.writeFileSync(filePath, optimizedBuffer);
