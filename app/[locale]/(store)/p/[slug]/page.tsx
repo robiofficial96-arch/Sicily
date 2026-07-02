@@ -6,6 +6,7 @@ import { useCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
 import { Star, ShoppingBag, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin, PackageCheck, PackageX, Flame } from 'lucide-react';
 import Link from 'next/link';
+import { PRODUCTS } from '@/lib/products';
 
 interface SizeOption { en: string; bn: string; price: number; sale_price: number | null; }
 
@@ -28,225 +29,125 @@ interface Product {
   stock?: number;
 }
 
-const mockProducts: Record<string, Product> = {
+const mockDescriptions: Record<string, { desc_en: string; desc_bn: string; short_en: string; short_bn: string }> = {
   '1': {
-    id: '1',
-    name_en: 'Premium Quality Bird Nest',
-    name_bn: 'প্রিমিয়াম কোয়ালিটি বার্ড নেস্ট',
-    price: 1250,
-    sale_price: 990,
-    images: ['/02.09.23.jpg'],
-    category: 'hangers',
-    rating: 4.8,
-    reviews: 24,
-    short_desc_en: 'Handcrafted anti-rust metal hanger with a modern geometric silhouette.',
-    short_desc_bn: 'হাতে তৈরি মরিচা-প্রতিরোধক মেটাল হ্যাঙ্গার, আধুনিক জ্যামিতিক ডিজাইনে।',
-    desc_en: 'Enhance your wall aesthetics with this handcrafted premium metal flower hanger.',
-    desc_bn: 'আপনার দেয়ালের সৌন্দর্য বাড়াতে আমাদের হাতে তৈরি এই প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গারটি অনন্য।',
-    colors: [
-      { en: 'Matte Black', bn: 'ম্যাট ব্ল্যাক', hex: '#111827' },
-      { en: 'Classic Gold', bn: 'ক্লাসিক গোল্ড', hex: '#D97706' }
-    ],
-    sizes: [
-      { en: '12"', bn: '১২ ইঞ্চি', price: 1250, sale_price: 990 },
-      { en: '18"', bn: '১৮ ইঞ্চি', price: 1550, sale_price: 1250 }
-    ],
-    stock: 8
+    desc_en: 'Enhance your wall aesthetics with this handcrafted premium metal flower hanger. Sourced from high-grade anti-rust painted iron.',
+    desc_bn: 'আপনার দেয়ালের সৌন্দর্য বাড়াতে আমাদের হাতে তৈরি এই প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গারটি অনন্য। মরিচা-প্রতিরোধক পেইন্ট করা উচ্চ মানের লোহা দ্বারা তৈরি।',
+    short_en: 'Handcrafted anti-rust metal hanger with a modern geometric silhouette.',
+    short_bn: 'হাতে তৈরি মরিচা-প্রতিরোধক মেটাল হ্যাঙ্গার, আধুনিক জ্যামিতিক ডিজাইনে।'
   },
   '2': {
-    id: '2',
-    name_en: 'Premium Orchid Bouquet',
-    name_bn: 'ঘর সাজান আভিজাত্যে – প্রিমিয়াম অর্কিড!',
-    price: 850,
-    sale_price: null,
-    images: ['/37-5.jpg'],
-    category: 'flowers',
-    rating: 4.9,
-    reviews: 18,
-    short_desc_en: 'Handcrafted pastel paper tulips, perfect for tables and gifting.',
-    short_desc_bn: 'হাতে তৈরি পেস্টেল কাগজের টিউলিপ, টেবিল সাজানো ও উপহারের জন্য উপযুক্ত।',
-    desc_en: 'Beautifully wrapped handcrafted pastel paper tulips.',
-    desc_bn: 'চমৎকারভাবে মোড়ানো হাতে তৈরি পেস্টেল কাগজের টিউলিপের তোড়া।',
-    colors: [
-      { en: 'Pastel Pink', bn: 'পেস্টেল পিঙ্ক', hex: '#F472B6' },
-      { en: 'Soft Yellow', bn: 'সফট ইয়েলো', hex: '#FDE047' }
-    ],
-    stock: 20
+    desc_en: 'Beautifully wrapped handcrafted pastel paper tulips. Perfect for dining tables, study desks, or gifting on special occasions.',
+    desc_bn: 'চমৎকারভাবে মোড়ানো হাতে তৈরি পেস্টেল কাগজের টিউলিপের তোড়া। ডাইনিং টেবিল, স্টাডি ডেস্ক বা বিশেষ অনুষ্ঠানে উপহার দেয়ার জন্য আদর্শ।',
+    short_en: 'Handcrafted pastel paper tulips, perfect for tables and gifting.',
+    short_bn: 'হাতে তৈরি পেস্টেল কাগজের টিউলিপ, টেবিল সাজানো ও উপহারের জন্য উপযুক্ত।'
   },
   '3': {
-    id: '3',
-    name_en: 'Premium Areca Palm',
-    name_bn: 'প্রিমিয়াম এরিকা পাম, বড় কাঠের টব সহ!',
-    price: 1500,
-    sale_price: 1200,
-    images: ['/38-7.jpg'],
-    category: 'frames',
-    rating: 4.7,
-    reviews: 32,
-    short_desc_en: 'Solid mahogany frame with preserved dry flowers, vintage country look.',
-    short_desc_bn: 'সলিড মেহগনি ফ্রেমে শুকানো ফুল, ভিন্টেজ কান্ট্রি লুক।',
-    desc_en: 'Hand-polished solid mahogany wood frames carrying preserved dry flowers. Gives an organic vintage country look to any home interior decoration. Each frame is sealed to prevent moisture damage, keeping the dried florals intact for years without fading.',
-    desc_bn: 'প্রাকৃতিক শুকানো ফুল ধরে রাখা হাতে পালিশ করা সলিড মেহগনি কাঠের তৈরি ফ্রেম। যেকোনো বাড়ির ঘরের ভেতরে চমৎকার ভিন্টেজ লুক এনে দেয়। প্রতিটি ফ্রেম আর্দ্রতা প্রতিরোধী সিল করা, যা বছরের পর বছর ফুলের রঙ অক্ষুণ্ণ রাখে।',
-    colors: [
-      { en: 'Rustic Oak', bn: 'রাস্টিক ওক', hex: '#78350F' },
-      { en: 'Dark Mahogany', bn: 'ডার্ক মেহগনি', hex: '#451A03' }
-    ],
-    stock: 4
+    desc_en: 'Hand-polished solid mahogany wood frames carrying preserved dry flowers. Gives an organic vintage country look to any home interior decoration.',
+    desc_bn: 'প্রাকৃতিক শুকানো ফুল ধরে রাখা হাতে পালিশ করা সলিড মেহগনি কাঠের তৈরি ফ্রেম। যেকোনো বাড়ির ঘরের ভেতরে চমৎকার ভিন্টেজ লুক এনে দেয়।',
+    short_en: 'Solid mahogany frame with preserved dry flowers, vintage country look.',
+    short_bn: 'সলিড মেহগনি ফ্রেমে শুকানো ফুল, ভিন্টেজ কান্ট্রি লুক।'
   },
   '5': {
-    id: '5',
-    name_en: 'Premium Orchid in Ceramic Pot',
-    name_bn: 'সিরামিক টবে প্রিমিয়াম অর্কিড – ঘরের আভিজাত্য!',
-    price: 920,
-    sale_price: 750,
-    images: ['/47-3.jpg'],
-    category: 'flowers',
-    rating: 4.6,
-    reviews: 14,
-    short_desc_en: 'Premium ceramic vase with minimal modern lines.',
-    short_desc_bn: 'আধুনিক ডিজাইনের মিনিমাল সিরামিক ফুলদানি।',
-    desc_en: 'Premium ceramic vase with minimal modern lines, ideal for showing off bouquets.',
+    desc_en: 'Premium ceramic vase with minimal modern lines, ideal for showing off fresh or dry floral bouquets.',
     desc_bn: 'আধুনিক ডিজাইনের মিনিমাল সিরামিক ফুলদানি, যা ফুলের তোড়া সাজিয়ে রাখার জন্য আদর্শ।',
-    colors: [{ en: 'Milky White', bn: 'মিল্কি হোয়াইট', hex: '#FFFFFF' }],
-    stock: 3
+    short_en: 'Premium ceramic vase with minimal modern lines.',
+    short_bn: 'আধুনিক ডিজাইনের মিনিমাল সিরামিক ফুলদানি।'
   },
   '6': {
-    id: '6',
-    name_en: 'Serene Yellow Orchid',
-    name_bn: 'হলুদ অর্কিডের স্নিগ্ধতায় সাজুক ঘর!',
-    price: 1100,
-    sale_price: null,
-    images: ['/49.jpg'],
-    category: 'hangers',
-    rating: 4.8,
-    reviews: 21,
-    short_desc_en: 'Boho style macrame wall hanging handcrafted with 100% natural cotton cord.',
-    short_desc_bn: '১০০% প্রাকৃতিক সুতি সুতা দিয়ে তৈরি বোহো স্টাইলের ম্যাক্রামে দেয়াল সজ্জা।',
     desc_en: 'Boho style macrame wall hanging handcrafted with 100% natural cotton cord on driftwood.',
     desc_bn: '১০০% প্রাকৃতিক সুতি সুতা দিয়ে তৈরি বোহো স্টাইলের ম্যাক্রামে দেয়াল সজ্জা শোপিস।',
-    colors: [{ en: 'Off White', bn: 'অফ হোয়াইট', hex: '#F9F6F0' }],
-    stock: 5
+    short_en: 'Boho style macrame wall hanging handcrafted with 100% natural cotton cord.',
+    short_bn: '১০০% প্রাকৃতিক সুতি সুতা দিয়ে তৈরি বোহো স্টাইলের ম্যাক্রামে দেয়াল সজ্জা।'
   },
   '7': {
-    id: '7',
-    name_en: 'Metal Stand with Flower Tub',
-    name_bn: 'মেটাল স্ট্যান্ড উইথ ফ্লাওয়ার টব – মডার্ন হোম ডেকোর!',
-    price: 1550,
-    sale_price: 1390,
-    images: ['/51-2.jpg'],
-    category: 'hangers',
-    rating: 4.9,
-    reviews: 15,
-    short_desc_en: 'Double decker anti-rust metal plant stand.',
-    short_desc_bn: 'মরিচা-প্রতিরোধক মেটাল ডাবল ডেকার প্ল্যান্ট স্ট্যান্ড।',
     desc_en: 'Double decker anti-rust metal plant stand for organizing multiple tubs.',
     desc_bn: 'মরিচা-প্রতিরোধক মেটাল ডাবল ডেকার প্ল্যান্ট স্ট্যান্ড, যা একসাথে কয়েকটি টব রাখার জন্য চমৎকার।',
-    colors: [{ en: 'Classic Gold', bn: 'ক্লাসিক GOLD', hex: '#D97706' }],
-    stock: 15
+    short_en: 'Double decker anti-rust metal plant stand.',
+    short_bn: 'মরিচা-প্রতিরোধক মেটাল ডাবল ডেকার প্ল্যান্ট স্ট্যান্ড।'
   },
   '8': {
-    id: '8',
-    name_en: 'Eye-catching Premium Orchid',
-    name_bn: 'নজরকাড়া প্রিমিয়াম অর্কিড, আকর্ষণীয় সিরামিক টব সহ!',
-    price: 950,
-    sale_price: 850,
-    images: ['/55-3.jpg'],
-    category: 'flowers',
-    rating: 4.7,
-    reviews: 28,
-    short_desc_en: 'Gorgeous handcrafted pastel roses bundle.',
-    short_desc_bn: 'হাতে তৈরি আকর্ষণীয় পেস্টেল গোলাপের তোড়া।',
     desc_en: 'Gorgeous handcrafted pastel roses bundle with premium gift wrapping sheets.',
     desc_bn: 'হাতে তৈরি আকর্ষণীয় পেস্টেল গোলাপের তোড়া, বিশেষ গিফট র‍্যাপিং পেপার সহ মোড়ানো।',
-    colors: [{ en: 'Pastel Rose Pink', bn: 'গোলাপী', hex: '#FDA4AF' }],
-    stock: 12
+    short_en: 'Gorgeous handcrafted pastel roses bundle.',
+    short_bn: 'হাতে তৈরি আকর্ষণীয় পেস্টেল গোলাপের তোড়া।'
   },
   '9': {
-    id: '9',
-    name_en: 'Handcrafted Mahogany Frame',
-    name_bn: 'হ্যান্ডক্রাফটেড মেহগনি ফ্রেম',
-    price: 1800,
-    sale_price: 1490,
-    images: ['/38-7.jpg'],
-    category: 'frames',
-    rating: 4.8,
-    reviews: 19,
-    short_desc_en: 'Luxury mahogany wooden frame with dried botanicals.',
-    short_desc_bn: 'আকর্ষণীয় মেহগনি কাঠের শৌখিন ফ্রেম।',
     desc_en: 'Luxury mahogany wooden frame with glass front and dried botanicals detail.',
     desc_bn: 'আকর্ষণীয় মেহগনি কাঠের শৌখিন ফ্রেম, সামনের কাচ ও ভেতর সুরক্ষিত প্রাকৃতিক শুকনো ফুল সহ।',
-    colors: [{ en: 'Mahogany Brown', bn: 'মেহগনি ব্রাউন', hex: '#451A03' }],
-    stock: 9
+    short_en: 'Luxury mahogany wooden frame with dried botanicals.',
+    short_bn: 'আকর্ষণীয় মেহগনি কাঠের শৌখিন ফ্রেম।'
   },
   '10': {
-    id: '10',
-    name_en: 'Premium Thai Magnolia',
-    name_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া',
-    price: 1150,
-    sale_price: 990,
-    images: ['/Magnolia-Flower.png'],
-    category: 'flowers',
-    rating: 4.5,
-    reviews: 11,
-    short_desc_en: 'Premium Magnolia plant in ceramic pot.',
-    short_desc_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া গাছ।',
     desc_en: 'Premium Magnolia plant in ceramic pot, perfect for home and workspace.',
     desc_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া গাছ, বাসা ও অফিসের অভ্যন্তরীণ সাজসজ্জায় প্রাণবন্ত লুক এনে দেবে।',
-    colors: [{ en: 'Magnolia White', bn: 'ম্যাগনোলিয়া হোয়াইট', hex: '#FFFFFF' }],
-    stock: 6
+    short_en: 'Premium Magnolia plant in ceramic pot.',
+    short_bn: 'সিরামিক টবে প্রিমিয়াম ম্যাগনোলিয়া গাছ।'
   },
   '11': {
-    id: '11',
-    name_en: 'Modern A-Frame Wall Shelf',
-    name_bn: 'মডার্ন এ-ফ্রেম ওয়াল শেলফ – ইনডোর ডেকোরের সেরা কম্বো!',
-    price: 1350,
-    sale_price: null,
-    images: ['/file_000000001bbc720894d5059a36ed2d3e.png'],
-    category: 'hangers',
-    rating: 4.7,
-    reviews: 13,
-    short_desc_en: 'Modern design A-Frame wood wall shelf.',
-    short_desc_bn: 'আধুনিক ডিজাইনের এ-ফ্রেম কাঠের দেয়াল তাক।',
     desc_en: 'Modern design A-Frame wood wall shelf with beautiful artificial greenery.',
     desc_bn: 'আধুনিক ডিজাইনের এ-ফ্রেম কাঠের দেয়াল তাক ও চমৎকার কৃত্রিম লতাপাতা কম্বো।',
-    colors: [{ en: 'Natural Wood & Green', bn: 'কাঠ ও সবুজ', hex: '#F9F6F0' }],
-    stock: 7
+    short_en: 'Modern design A-Frame wood wall shelf.',
+    short_bn: 'আধুনিক ডিজাইনের এ-ফ্রেম কাঠের দেয়াল তাক।'
   },
   '12': {
-    id: '12',
-    name_en: 'Thai Banana Tree',
-    name_bn: 'ইনডোর ডেকোরে ইউনিক লুক – থাই বানানা ট্রি!',
-    price: 2200,
-    sale_price: 1890,
-    images: ['/37-5.jpg'],
-    category: 'plants',
-    rating: 4.8,
-    reviews: 22,
-    short_desc_en: 'Premium geometric ceramic plant pot, extremely stylish.',
-    short_desc_bn: 'আকর্ষণীয় জ্যামিতিক সিরামিক টব।',
     desc_en: 'Premium geometric ceramic plant pot, extremely stylish and suitable for large plants.',
     desc_bn: 'আকর্ষণীয় জ্যামিতিক সিরামিক টব, যা আপনার ঘরের বড় বড় ইনডোর গাছের জন্য দারুণ মানানসই।',
-    colors: [{ en: 'Charcoal Black', bn: 'কয়লা কালো', hex: '#1E293B' }],
-    stock: 5
+    short_en: 'Premium geometric ceramic plant pot, extremely stylish.',
+    short_bn: 'আকর্ষণীয় জ্যামিতিক সিরামিক টব।'
   },
   '13': {
-    id: '13',
-    name_en: 'Green Fern Plant',
-    name_bn: 'সবুজ ফার্ন প্ল্যান্ট',
-    price: 1200,
-    sale_price: 990,
-    images: ['/55-3.jpg'],
-    category: 'plants',
-    rating: 4.6,
-    reviews: 17,
-    short_desc_en: 'Lush green artificial fern plant in simple white pot.',
-    short_desc_bn: 'আকর্ষণীয় চিরসবুজ কৃত্রিম ফার্ন গাছ ও সাদা টব।',
     desc_en: 'Lush green artificial fern plant in simple white pot, maintenance free.',
     desc_bn: 'আকর্ষণীয় চিরসবুজ কৃত্রিম ফার্ন গাছ ও সাদা টব, যা পানি বা রোদের কোনো ঝামেলা ছাড়াই সতেজ দেখাবে।',
-    colors: [{ en: 'Green', bn: 'সবুজ', hex: '#10B981' }],
-    stock: 14
+    short_en: 'Lush green artificial fern plant in simple white pot.',
+    short_bn: 'আকর্ষণীয় চিরসবুজ কৃত্রিম ফার্ন গাছ ও সাদা টব।'
   }
 };
+
+const mockProducts: Record<string, Product> = {};
+PRODUCTS.forEach((p) => {
+  const meta = mockDescriptions[p.id] || {
+    desc_en: p.name_en,
+    desc_bn: p.name_bn,
+    short_en: p.name_en,
+    short_bn: p.name_bn
+  };
+  
+  mockProducts[p.id] = {
+    id: p.id,
+    name_en: p.name_en,
+    name_bn: p.name_bn,
+    price: p.price,
+    sale_price: p.sale_price,
+    images: p.id === '12' ? ['/banana-tree.jpg', '/banana-tree-1.jpg', '/banana-tree-2.jpg', '/banana-tree-trans.png'] : [p.image],
+    category: p.category,
+    rating: p.rating || 4.8,
+    reviews: p.reviews || 22,
+    short_desc_en: meta.short_en,
+    short_desc_bn: meta.short_bn,
+    desc_en: meta.desc_en,
+    desc_bn: meta.desc_bn,
+    colors: [
+      { en: 'Classic Gold', bn: 'ক্লাসিক গোল্ড', hex: '#D97706' }
+    ],
+    sizes: p.sizes ? p.sizes.map((s: string) => {
+      const sizeLower = s.toLowerCase();
+      let pAdd = 0;
+      if (sizeLower.includes('18') || sizeLower.includes('medium') || sizeLower.includes('16')) {
+        pAdd = 300;
+      } else if (sizeLower.includes('24') || sizeLower.includes('large') || sizeLower.includes('20')) {
+        pAdd = 600;
+      }
+      return {
+        en: s,
+        bn: s.replace('inch', 'ইঞ্চি').replace('"', ' ইঞ্চি'),
+        price: p.price + pAdd,
+        sale_price: p.sale_price !== null ? p.sale_price + pAdd : null
+      };
+    }) : undefined,
+    stock: p.stock !== undefined ? p.stock : 10
+  };
+});
 
 const BD_DISTRICTS = [
   { id: 'dhaka', en: 'Dhaka (City)', bn: 'ঢাকা (সিটি)' },

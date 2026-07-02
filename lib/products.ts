@@ -160,7 +160,7 @@ export const PRODUCTS: HomeProduct[] = [
     name_bn: 'ইনডোর ডেকোরে ইউনিক লুক – থাই বানানা ট্রি!', 
     price: 2200, 
     sale_price: 1890, 
-    image: '/37-5.jpg', 
+    image: '/banana-tree.jpg', 
     discount: '-14%', 
     sizes: ['20"', '24"'], 
     stock: 5,

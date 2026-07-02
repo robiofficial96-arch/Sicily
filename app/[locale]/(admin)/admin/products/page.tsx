@@ -5,6 +5,8 @@ import { useLocale } from 'next-intl';
 import { Package, Plus, Pencil, Trash2, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 
+import { PRODUCTS } from '@/lib/products';
+
 interface Product {
   id: string;
   name_en: string;
@@ -16,38 +18,16 @@ interface Product {
   stock: number;
 }
 
-const DEFAULT_MOCK_PRODUCTS: Product[] = [
-  {
-    id: '1',
-    name_en: 'Premium Metal Flower Hanger',
-    name_bn: 'প্রিমিয়াম মেটাল ফ্লাওয়ার হ্যাঙ্গার',
-    price: 1250,
-    sale_price: 990,
-    image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=600',
-    category: 'hangers',
-    stock: 2
-  },
-  {
-    id: '2',
-    name_en: 'Handcrafted Pastel Tulip Bouquet',
-    name_bn: 'হ্যান্ডক্রাফটেড পেস্টেল টিউলিপ তোড়া',
-    price: 850,
-    sale_price: null,
-    image: 'https://images.unsplash.com/photo-1520763185298-1b434c919102?auto=format&fit=crop&q=80&w=600',
-    category: 'flowers',
-    stock: 12
-  },
-  {
-    id: '3',
-    name_en: 'Vintage Wooden Wall Flower Frame',
-    name_bn: 'ভিন্টেজ কাঠের ওয়াল ফ্লাওয়ার ফ্রেম',
-    price: 1500,
-    sale_price: 1200,
-    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=600',
-    category: 'frames',
-    stock: 4
-  }
-];
+const DEFAULT_MOCK_PRODUCTS: Product[] = PRODUCTS.map(p => ({
+  id: p.id,
+  name_en: p.name_en,
+  name_bn: p.name_bn,
+  price: p.price,
+  sale_price: p.sale_price,
+  image: p.image,
+  category: p.category,
+  stock: p.stock
+}));
 
 export default function AdminProductsPage() {
   const locale = useLocale();

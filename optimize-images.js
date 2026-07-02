@@ -13,7 +13,11 @@ const TARGET_IMAGES = [
   '51-2.jpg',
   '55-3.jpg',
   'file_000000001bbc720894d5059a36ed2d3e.png',
-  'Magnolia-Flower.png'
+  'Magnolia-Flower.png',
+  'banana-tree.jpg',
+  'banana-tree-1.jpg',
+  'banana-tree-2.jpg',
+  'banana-tree-trans.png'
 ];
 
 async function optimize() {
