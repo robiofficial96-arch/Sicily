@@ -5,11 +5,13 @@ import { useLocale } from 'next-intl';
 import { Heart, Search, Crown, Flower2, Sprout, Frame } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useWishlist } from '@/lib/wishlist';
 
 export default function Navbar() {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const { wishlistCount } = useWishlist();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState('');
 
@@ -79,11 +81,16 @@ export default function Navbar() {
             {/* Right: Wishlist Action */}
             <div className="flex items-center justify-end">
               <Link
-                href={`/${currentLocale}/shop`}
-                className="p-2 rounded-lg text-brand-muted hover:text-brand-secondary hover:bg-brand-surface transition-all duration-200"
+                href={`/${currentLocale}/wishlist`}
+                className="relative p-2 rounded-lg text-brand-muted hover:text-brand-secondary hover:bg-brand-surface transition-all duration-200"
                 title="Wishlist"
               >
                 <Heart className="h-5 w-5" strokeWidth={1.75} />
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0.5 right-0.5 bg-brand-secondary text-white text-[8px] font-black h-3.5 w-3.5 rounded-full flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>

@@ -114,16 +114,16 @@ export default function FooterNav() {
             </h4>
             <ul className="space-y-2.5">
               {[
-                { en: 'About Us', bn: 'আমাদের সম্পর্কে', icon: Info },
-                { en: 'Delivery Policy', bn: 'ডেলিভারি পলিসি', icon: Truck },
-                { en: 'Return & Refund', bn: 'রিটার্ন ও রিফান্ড', icon: RefreshCw },
-                { en: 'Privacy Policy', bn: 'প্রাইভেসি পলিসি', icon: ShieldAlert },
-                { en: 'Contact Us', bn: 'যোগাযোগ করুন', icon: Phone },
+                { en: 'About Us', bn: 'আমাদের সম্পর্কে', icon: Info, href: `/${currentLocale}/about` },
+                { en: 'Delivery Policy', bn: 'ডেলিভারি পলিসি', icon: Truck, href: `/${currentLocale}/delivery-policy` },
+                { en: 'Return & Refund', bn: 'রিটার্ন ও রিফান্ড', icon: RefreshCw, href: `/${currentLocale}/return-refund` },
+                { en: 'Privacy Policy', bn: 'প্রাইভেসি পলিসি', icon: ShieldAlert, href: `/${currentLocale}/privacy-policy` },
+                { en: 'Contact Us', bn: 'যোগাযোগ করুন', icon: Phone, href: `/${currentLocale}/contact` },
               ].map((l, i) => {
                 const Icon = l.icon;
                 return (
                   <li key={i}>
-                    <Link href="#" className="text-xs text-[#F2EDE3]/55 hover:text-[#FF3D9A] transition-colors duration-200 flex items-center gap-2">
+                    <Link href={l.href} className="text-xs text-[#F2EDE3]/55 hover:text-[#FF3D9A] transition-colors duration-200 flex items-center gap-2">
                       <Icon className="h-3.5 w-3.5 text-[#C6A15B]/70 flex-shrink-0" strokeWidth={1.75} />
                       <span>{locale === 'bn' ? l.bn : l.en}</span>
                     </Link>

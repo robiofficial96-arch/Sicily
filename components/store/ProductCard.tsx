@@ -2,11 +2,12 @@
 
 import { Heart, ShoppingCart, PackageCheck, PackageX, Flame } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
 import type { HomeProduct } from '@/lib/products';
+import { useWishlist } from '@/lib/wishlist';
 
 export default function ProductCard({ p, locale }: { p: HomeProduct; locale: string }) {
-  const [liked, setLiked] = useState(false);
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const liked = isWishlisted(p.id);
   const name = locale === 'bn' ? p.name_bn : p.name_en;
   const price = p.sale_price ?? p.price;
 
@@ -27,7 +28,7 @@ export default function ProductCard({ p, locale }: { p: HomeProduct; locale: str
 
         {/* Wishlist Heart Icon (Top-right corner) */}
         <button
-          onClick={() => setLiked((l) => !l)}
+          onClick={() => toggleWishlist({ id: p.id, name_en: p.name_en, name_bn: p.name_bn, image: p.image, price: p.price, sale_price: p.sale_price })}
           className="absolute top-2.5 right-2.5 h-8 w-8 flex items-center justify-center rounded-full bg-white/95 shadow-sm border border-brand-border [@media(hover:hover)]:hover:scale-110 [@media(hover:hover)]:hover:border-brand-secondary/50 [@media(hover:hover)]:hover:shadow-md transition-all duration-200"
         >
           <Heart className={`h-3.5 w-3.5 transition-colors ${liked ? 'fill-brand-secondary text-brand-secondary' : 'text-brand-muted'}`} strokeWidth={1.75} />

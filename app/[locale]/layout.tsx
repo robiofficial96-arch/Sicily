@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { Inter, Hind_Siliguri, Playfair_Display } from 'next/font/google';
 import { CartProvider } from '@/lib/cart';
+import { WishlistProvider } from '@/lib/wishlist';
 import '../globals.css';
 
 const inter = Inter({
@@ -41,7 +42,9 @@ export default async function LocaleLayout({
       <body className={`${locale === 'bn' ? 'font-bangla' : 'font-sans'} antialiased text-brand-text bg-brand-bg min-h-screen flex flex-col`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <CartProvider>
-            {children}
+            <WishlistProvider>
+              {children}
+            </WishlistProvider>
           </CartProvider>
         </NextIntlClientProvider>
       </body>
