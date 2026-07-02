@@ -174,8 +174,8 @@ const mockProducts: Record<string, Product> = {
   },
   '12': {
     id: '12',
-    name_en: 'Premium Tree Plant Tub',
-    name_bn: 'প্রিমিয়াম ট্রি প্ল্যান্ট টাব',
+    name_en: 'Thai Banana Tree',
+    name_bn: 'ইনডোর ডেকোরে ইউনিক লুক – থাই বানানা ট্রি!',
     price: 2200,
     sale_price: 1890,
     images: ['/37-5.jpg'],
