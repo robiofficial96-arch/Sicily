@@ -44,8 +44,8 @@ export const PRODUCTS: HomeProduct[] = [
   },
   { 
     id: '3', 
-    name_en: 'Vintage Wooden Wall Frame', 
-    name_bn: 'ভিন্টেজ কাঠের ওয়াল ফ্রেম', 
+    name_en: 'Premium Areca Palm', 
+    name_bn: 'প্রিমিয়াম এরিকা পাম, বড় কাঠের টব সহ!', 
     price: 1500, 
     sale_price: 1200, 
     image: '/38-7.jpg', 
